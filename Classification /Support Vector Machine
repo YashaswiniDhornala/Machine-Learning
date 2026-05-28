@@ -1,0 +1,66 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset 
+dataset = pd.read_csv(r"C:\Users\hp\Downloads\logit classification.csv")
+
+# Divide dataset into x and y 
+x= dataset.iloc[:,[2,3]].values
+y= dataset.iloc[:,-1].values
+
+# Splitting the dataset into train and test set
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2, random_state=0)
+
+# Feature scaling
+from sklearn.preprocessing import StandardScaler
+sc=StandardScaler()
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+# Training the svm model for training dataset
+from sklearn.svm import SVC
+classifier1= SVC()
+classifier1.fit(x_train, y_train)
+
+# Test case 1
+from sklearn.svm import SVC
+classifier1= SVC(C=10.0, kernel='sigmoid', gamma= 'scale')
+classifier1.fit(x_train, y_train)
+
+# Test case 2
+from sklearn.svm import SVC
+classifier1= SVC(C=10.0, kernel='rbf', gamma= 'auto', degree = 5)
+classifier1.fit(x_train, y_train)
+
+# Test case 3
+from sklearn.svm import SVC
+classifier1= SVC(C=10.0, kernel='poly', gamma= 'scale', degree = 5)
+classifier1.fit(x_train, y_train)
+
+
+# Test case 4
+from sklearn.svm import SVC
+classifier1= SVC(C=10.0, kernel='linear', gamma= 'scale', degree = 5)
+classifier1.fit(x_train, y_train)
+
+y_pred = classifier1.predict(x_test)
+
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+
+from sklearn.metrics import accuracy_score
+ac=accuracy_score(y_test,y_pred)
+print(ac)
+
+from sklearn.metrics import classification_report
+cr= classification_report(y_test, y_pred)
+print(cr)
+
+variance=classifier1.score(x_train, y_train)
+variance
+
+bias =classifier1.score(x_train, y_train)
+bias
