@@ -1,0 +1,46 @@
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+import seaborn as sns
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression , Ridge, Lasso
+from sklearn.metrics import r2_score
+
+df=pd.read_csv(r"C:\Users\hp\Downloads\car-mpg.csv")
+
+df.shape
+df.columns
+df.info()
+df.head()
+
+df=df.drop(['car_name'], axis =1)
+df['origin']=df['origin'].replace({1:'America',2:'Europe',3:'Asia'})
+df=pd.get_dummies(df,columns=['origin'],dtype=int)
+
+import numpy as np
+df=df.replace('?',np.nan)
+df=df.apply(pd.to_numeric, errors='ignore')
+
+# fill median only for numeric columns
+df=df.apply(lamba x: x.fillna(x.median()) if x.dtype!='object' else x, axis =0)
+
+x=df.drop(['mpg'],axis=1)
+y=df[['mpg']]
+
+x_s=preprocessing.scale(x)
+
+y_s=preprocessing.scale(y)
+
+x_s = pd.DataFrame(x_s, columns=x.columns)
+y_s= pd.DataFrame(y_s,columns=y.columns)
+
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.3,random_state=0)
+
+from sklearn.linear_model import LinearRegression , Ridge, Lasso
+regression_model = LinearRegression()
+regression_model.fit(x_train,y_train)
+
+coeff= regression_model.coef_
+
+intercept = regression_model.intercept_
