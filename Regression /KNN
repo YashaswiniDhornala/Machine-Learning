@@ -1,0 +1,46 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+dataset=pd.read_csv(r"C:\Users\hp\Downloads\emp_sal.csv")
+
+x= dataset.iloc[:,1:2].values
+y=dataset.iloc[:,2].values
+
+
+
+from sklearn.linear_model import LinearRegression
+lin_reg=LinearRegression()
+lin_reg.fit(x,y)
+
+plt.scatter(x,y,color="red")
+plt.plot(x,lin_reg.predict(x),color="blue")
+plt.title("Linear Regression graph")
+plt.xlabel("position level")
+plt.ylabel("Salary")
+plt.show()
+
+
+lin_model_pred=lin_reg.predict([[6.5]])
+print(lin_model_pred)
+
+
+# KNN Model 
+# test case 1
+
+from sklearn.neighbors import KNeighborsRegressor
+knn_reg=KNeighborsRegressor()
+knn_reg.fit(x,y)
+
+knn_reg_pred=knn_reg.predict([[6.5]])
+print(knn_reg_pred)
+
+
+# test case 2
+
+from sklearn.neighbors import KNeighborsRegressor
+knn_reg=KNeighborsRegressor(p=1, weights='distance')
+knn_reg.fit(x,y)
+
+knn_reg_pred=knn_reg.predict([[6.5]])
+print(knn_reg_pred)
